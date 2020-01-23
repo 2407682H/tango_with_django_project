@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+  <head>
+    <title>Rango</title>
+  </head>
+
+  <body>
+    <h1>Rango says...</h1>
+
+    <div>
+      Here is the about page.<br />
+      <strong>{{ boldmessage }}</strong><br />
+    </div>
+
+    <div>
+      <a href = "/rango/">Index</a><br />
+      <img src = "{% static 'images/TheRealMajority.jpeg' %}" alt = "Graph of turnout." />
+      <img src = "/media/cat.jpeg" alt = "Picture of a cat." />
+    </div>
+
+  </body>
+</html>
