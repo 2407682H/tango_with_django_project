@@ -1,4 +1,5 @@
 import os
+import random
 
 os.environ.setdefault(  "DJANGO_SETTINGS_MODULE",
 			"tango_with_django_project.settings")
@@ -50,7 +51,7 @@ def pop():
         c = add_cat(cat, initial)
         initial = (initial / 2) #Divide initial by 2 every time for exercise
         for p in cat_data['pages']:
-            add_page(c, p['title'], p['url'])
+            add_page(c, p['title'], p['url'], views = random.randint(0, 150))
 
 
     for c in Category.objects.all():

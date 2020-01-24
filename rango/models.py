@@ -2,12 +2,19 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.template.defaultfilters import slugify
 
 #Category class
 class Category(models.Model):
     name = models.CharField(max_length = 128, unique = True) #Define a character field of length 128 that must be unique
     views = models.IntegerField(default = 0)
     likes = models.IntegerField(default = 0)
+    slug = models.SlugField(unique = True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Category, self).save(*args, **kwargs)
+
 
     #Nested meta class to fix typo
     class Meta:
