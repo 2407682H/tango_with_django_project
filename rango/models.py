@@ -1,31 +1,25 @@
-import datetime
-
 from django.db import models
-from django.utils import timezone
 from django.template.defaultfilters import slugify
 
-#Category class
-class Category(models.Model):
-    name = models.CharField(max_length = 128, unique = True) #Define a character field of length 128 that must be unique
+
+class Category(models.Model):   # Category class
+    name = models.CharField(max_length = 128, unique = True)
     views = models.IntegerField(default = 0)
     likes = models.IntegerField(default = 0)
     slug = models.SlugField(unique = True)
+
+    class Meta:     # Nested meta class to fix typo
+        verbose_name_plural = "Categories"
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super(Category, self).save(*args, **kwargs)
 
-
-    #Nested meta class to fix typo
-    class Meta:
-        verbose_name_plural = "Categories"
-
     def __str__(self):
-      return self.name
+        return self.name
 
 
-#Page class
-class Page(models.Model):
+class Page(models.Model):   # Page class
     category = models.ForeignKey(Category, on_delete = models.CASCADE) #Foreign key of category - OneToMany relationship
     title = models.CharField(max_length = 128)
     url = models.URLField()
@@ -33,31 +27,3 @@ class Page(models.Model):
 
     def __str__(self):
         return self.title
-
-
-"""
-#Chapter 2 and 7 of Django tutorial
-#Question class
-class Question(models.Model):
-    question_text = models.CharField(max_length = 200)
-    pub_date = models.DateTimeField("Date published")
-
-    def __str__(self):
-        return self.question_text
-
-
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days = 1)
-
-    was_published_recently.admin_order_field = "pub_date"
-    was_published_recently.boolean = True
-    was_published_recently.short_description = "Published recently?"
-#Choice class
-class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete = models.CASCADE)
-    choice_text = models.CharField(max_length = 200)
-    votes = models.IntegerField(default = 0)
-
-    def __str__(self):
-        return self.choice_text
-"""

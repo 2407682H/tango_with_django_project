@@ -1,56 +1,37 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
+from django.urls import reverse
+
 from rango.models import Category, Page
 
-#3.4 - Creating a view
-from django.http import HttpResponse
-
-"""def index(request):
-    #Passed to template engine, matches {{ boldmessage }}
-    #Key value pairs employed within the template
-    context_dict = {"boldmessage": "Crunchy, creamy, cookie, candy, cupcake!"}
-
-    #Return rendered response to send to client, first parameter is template
-    #The render function combines the template data and the context_dict to produce a page
-    return render(request, "rango/index.html", context = context_dict)
-
-    #return HttpResponse("Rango says hey there partner! " + "<a href = '/rango/about/'>About</a>")
-"""
+from rango.forms import CategoryForm
+from rango.forms import PageForm
 
 
-def about(request):
+def about(request):     # View for About page
     context_dict = {"boldmessage": "This tutorial has been put together by Jake Haakanson."}
 
     return render(request, "rango/about.html", context = context_dict)
-    #return HttpResponse("Rango says here is the about page. " + "<a href = '/rango/'>Index</a>")
 
 
-#Index from chapter 6
-def index(request):
-    #Query database for all categories, order by likes descending
-    #Obtain top 5 by likes and place this list in context dictionary
-    topFiveCategories = Category.objects.order_by("-likes")[:5]
-
-    context_dict = {}
-
-    #Bold message from earlier, add categories list to context_dict
-    context_dict["boldmessage"] = "Crunchy, creamy, cookie, candy, cupcake!"
-    context_dict["categories"] = topFiveCategories
-
-    #Add pages list to context dict
-    context_dict["pages"] = Page.objects.order_by("-views")[:5]
+def index(request):     # Index from chapter 6
+    context_dict = {
+        "boldmessage": "Crunchy, creamy, cookie, candy, cupcake!",     # Bold message from earlier
+        "categories": Category.objects.order_by("-likes")[:5],         # Add categories list to context_dict
+        "pages": Page.objects.order_by("-views")[:5]}                  # Add pages list to context dict
 
     return render(request, "rango/index.html", context = context_dict)
 
-#Show category view from chapter 6
-def show_category(request, category_name_slug):
+
+def show_category(request, category_name_slug):     # Show category view from chapter 6
     context_dict = {}
 
     try:
-        #Get category if it exists and add to context_dict
+        # Get category if it exists and add to context_dict
         category = Category.objects.get(slug = category_name_slug)
         context_dict["category"] = category
 
-        #Get all associated pages, also add to context_dict
+        # Get all associated pages, also add to context_dict
         pages = Page.objects.filter(category = category)
         context_dict["pages"] = pages
 
@@ -61,10 +42,7 @@ def show_category(request, category_name_slug):
     return render(request, "rango/category.html", context = context_dict)
 
 
-from rango.forms import CategoryForm
-from django.shortcuts import redirect
-
-def add_category(request):
+def add_category(request):  # Add category view
     form = CategoryForm()
 
     if request.method == "POST":
@@ -78,17 +56,13 @@ def add_category(request):
         else:
             print(form.errors)
 
-    return render(request, "rango/add_category.html", {"form" : form})
+    return render(request, "rango/add_category.html", {"form": form})
 
 
-
-from rango.forms import PageForm
-from django.shortcuts import redirect
-from django.urls import reverse
-
-def add_page(request, category_name_slug):
+def add_page(request, category_name_slug):  # Add page view
     try:
         category = Category.objects.get(slug = category_name_slug)
+
     except Category.DoesNotExist:
         category = None
 
@@ -106,10 +80,10 @@ def add_page(request, category_name_slug):
                 page.views = 0
                 page.save()
 
-                return redirect(reverse("rango:show_category", kwargs = {"category_name_slug" : category_name_slug}))
+                return redirect(reverse("rango:show_category", kwargs = {"category_name_slug": category_name_slug}))
 
         else:
             print(form.errors)
 
-    context_dict = {"form" : form, "category" : category}
+    context_dict = {"form": form, "category": category}
     return render(request, "rango/add_page.html", context = context_dict)

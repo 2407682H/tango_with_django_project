@@ -1,17 +1,16 @@
 from django import forms
 from rango.models import Page, Category
 
+
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(max_length = 128, help_text = "Please enter the category name.")
     views = forms.IntegerField(widget = forms.HiddenInput(), initial = 0)
     likes = forms.IntegerField(widget = forms.HiddenInput(), initial = 0)
     slug = forms.CharField(widget = forms.HiddenInput, required = False)
 
-    #Provide additional information about the form
-    class Meta:
-        #Provide association between the ModelForm and a model
-        model = Category
-        fields = ("name", )
+    class Meta:     # Provide additional information about the form
+        model = Category        # Provide association between the ModelForm and a model
+        fields = ("name", )     # Fields to include in form
 
 
 class PageForm(forms.ModelForm):
@@ -21,9 +20,9 @@ class PageForm(forms.ModelForm):
 
     class Meta:
         model = Page
-        exclude = ("category", )
+        exclude = ("category", )    # Fields to exclude in form
 
-    def clean(self):
+    def clean(self):    # Function for cleaning URLs entered
         cleaned_data = self.cleaned_data
         url = cleaned_data.get("url")
 
