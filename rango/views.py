@@ -162,6 +162,7 @@ def user_login(request):
     else:
         return render(request, "rango/login.html")
 
+
 @login_required
 def user_logout(request):
     logout(request)

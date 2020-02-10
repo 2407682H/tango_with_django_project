@@ -12,7 +12,7 @@ django.setup()
 from rango.models import Category, Page
 
 
-def pop():
+def populate():
     python_pages = [
 			{"title" : "Official python tutorial",
 			 "url" : "http://docs.python.org/3/tutorial/"},

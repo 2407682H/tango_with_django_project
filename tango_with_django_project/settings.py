@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")			#Path to templates folder
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")			#Path to templates folder
 STATIC_DIR = os.path.join(BASE_DIR, "static")				#Path to static folder
 MEDIA_DIR = os.path.join(BASE_DIR, "media")				#Path to media folder
 
@@ -58,7 +58,7 @@ ROOT_URLCONF = 'tango_with_django_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
