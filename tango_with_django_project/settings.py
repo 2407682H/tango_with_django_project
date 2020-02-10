@@ -124,12 +124,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#Static file storage
+# Static file storage
 STATICFILES_DIRS = [STATIC_DIR]
 
 
-#Media variables
+# Media variables
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
 LOGIN_URL = "rango:login"
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
